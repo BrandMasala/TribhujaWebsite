@@ -229,10 +229,11 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           
 
           {/* CHECKBOX 2: COMMUNICATION CONSENT */}
-         <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', marginTop: '10px' }}>
+          <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', marginTop: '10px' }}>
             <input id="consent_privacy" type="checkbox" required style={{ marginTop: '5px', accentColor: '#B87333', width: '18px', height: '18px', cursor: 'pointer' }} />
             <label htmlFor="consent_privacy" style={{ fontSize: '0.75rem', color: 'rgba(240,226,200,0.5)', lineHeight: 1.6, textAlign: 'left', cursor: 'pointer' }}>
-              I hereby give my consent to the collection and use of my personal data in accordance with the <a href="https://gangothri.com/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#B87333', fontWeight: 600, borderBottom: '1px solid rgba(184,115,51,0.3)', textDecoration: 'none' }}>Privacy Policy</a>.
+             I authorise Tribhuja Zuari Gangothri & its representatives to contact me with updates and notifications via Email/SMS/What'sApp/Call. This will override on DND/NDNC (hyperlinked to the policy/terms & condition page)            
+            . I hereby give my consent to the collection and use of my personal data in accordance with the <a href="https://gangothri.com/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#B87333', fontWeight: 600, borderBottom: '1px solid rgba(184,115,51,0.3)', textDecoration: 'none' }}>Privacy Policy</a>.
             </label>
           </div>
           
