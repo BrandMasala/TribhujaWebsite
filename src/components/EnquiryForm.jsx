@@ -1,22 +1,86 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-// TODO: replace href with the Zuari CRM endpoint when supplied.
-// For now linking to /enquiry as a placeholder route.
-const ENQUIRY_HREF = '/enquiry';
-const ENQUIRY_PHONE = '+91 00000 00000';
+const LEAD_API_URL = 'https://zuari.my.salesforce-sites.com/services/apexrest/WebsiteLead/';
+const PROJECT_NAME = 'Zuari Gangothri Tribhuja';
+const LEAD_SOURCE = 'Website';
 
 const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
   const isBrochure = type === 'brochure';
 
-  // Handle Lenis scroll lock
-  useEffect(() => {
-    if (isOpen && window.lenis) {
-      window.lenis.stop();
-    } else if (!isOpen && window.lenis) {
-      window.lenis.start();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [message, setMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const resetForm = () => {
+    setName(''); setEmail(''); setPhone(''); setMessage('');
+    setError(''); setSubmitting(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSubmitting(true);
+
+    const payload = {
+      lastName: name.trim().slice(0, 80),
+      mobile: phone.trim(),
+      project: PROJECT_NAME,
+      source: LEAD_SOURCE,
+      subSource: isBrochure ? 'Brochure Download' : 'Enquiry Form',
+    };
+    if (email.trim()) payload.email = email.trim();
+    if (message.trim()) payload.description = message.trim().slice(0, 80);
+
+    try {
+      const res = await fetch(LEAD_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const raw = await res.text();
+      let ok = false;
+      try {
+        const data = JSON.parse(raw);
+        ok = data && data.success === true;
+        if (!ok && data && data.message) throw new Error(data.message);
+      } catch (parseErr) {
+        if (raw.trim().toUpperCase().startsWith('FAIL')) {
+          throw new Error(raw.trim());
+        }
+        ok = res.ok;
+      }
+      if (!ok) throw new Error('Submission failed. Please try again.');
+
+      if (isBrochure) {
+        const link = document.createElement('a');
+        link.href = '/brochure.pdf';
+        link.download = 'Tribhuja-Brochure.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        alert('Thank you. A relationship manager will contact you shortly.');
+      }
+      resetForm();
+      onClose();
+    } catch (err) {
+      setError(err.message || 'Something went wrong. Please try again.');
+      setSubmitting(false);
     }
+  };
+
+  // Lock background scroll (Lenis + native body) while modal is open
+  useEffect(() => {
+    if (!isOpen) return;
+    if (window.lenis) window.lenis.stop();
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     return () => {
       if (window.lenis) window.lenis.start();
+      document.body.style.overflow = prevOverflow;
     };
   }, [isOpen]);
 
@@ -25,15 +89,15 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
   return (
     <div
       className="enquiry-modal-overlay"
-      style={{ 
-        position: 'fixed', 
+      data-lenis-prevent
+      style={{
+        position: 'fixed',
         inset: 0,
         zIndex: 10000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         padding: '40px 20px',
-        overflowY: 'auto'
+        overflowY: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        overscrollBehavior: 'contain'
       }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
@@ -90,12 +154,12 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
 
       <div
         className="ps-inner enquiry-block enquiry-block-anim"
-        style={{ 
-          maxWidth: '1000px', 
+        style={{
+          maxWidth: '1000px',
           width: '100%',
-          margin: 'auto', 
+          margin: '0 auto',
           background: 'rgba(8, 8, 6, 0.9)',
-          textAlign: 'center', 
+          textAlign: 'center',
           padding: '40px',
           border: '1px solid rgba(184,115,51,0.1)',
           borderRadius: '8px'
@@ -115,25 +179,9 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           {isBrochure ? 'Download Brochure' : 'Send Us Your Questions'}
         </h2>
 
-        <form 
-          className="form-grid" 
-          onSubmit={(e) => {
-            e.preventDefault();
-            
-            if (isBrochure) {
-              alert('Thank you. Your download will begin shortly.');
-              const link = document.createElement('a');
-              link.href = '/brochure.pdf';
-              link.download = 'Tribhuja-Brochure.pdf';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            } else {
-              alert('Thank you. A relationship manager will contact you shortly.');
-            }
-            
-            onClose();
-          }}
+        <form
+          className="form-grid"
+          onSubmit={handleSubmit}
           style={{ 
             width: '100%', 
             display: 'flex',
@@ -144,12 +192,15 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
         >
           {/* ROW 1: NAME & EMAIL */}
           <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '1fr 1fr', gap: '20px' }}>
-            <input 
-              type="text" 
+            <input
+              type="text"
               className="ef-input"
-              placeholder="Enter Name *" 
-              required 
-              style={{ 
+              placeholder="Enter Name *"
+              required
+              maxLength={80}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              style={{
                 border: '1px solid rgba(184,115,51,0.3)', 
                 background: 'rgba(255,255,255,0.04)', 
                 padding: '18px 24px', 
@@ -161,12 +212,14 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
                 transition: 'border 0.3s'
               }} 
             />
-            <input 
-              type="email" 
+            <input
+              type="email"
               className="ef-input"
-              placeholder="Enter Email *" 
-              required 
-              style={{ 
+              placeholder="Enter Email *"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{
                 border: '1px solid rgba(184,115,51,0.3)', 
                 background: 'rgba(255,255,255,0.04)', 
                 padding: '18px 24px', 
@@ -183,12 +236,15 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           {/* ROW 2: PHONE - full width */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
             <span style={{ position: 'absolute', left: '22px', fontSize: '1.1rem', zIndex: 2 }}>🇮🇳</span>
-            <input 
-              type="tel" 
+            <input
+              type="tel"
               className="ef-input"
-              placeholder="Enter Phone Number *" 
-              required 
-              style={{ 
+              placeholder="Enter Phone Number *"
+              required
+              pattern="[0-9+\-\s]{7,20}"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              style={{
                 border: '1px solid rgba(184,115,51,0.3)', 
                 background: 'rgba(255,255,255,0.05)', 
                 padding: '20px 24px 20px 64px', 
@@ -202,11 +258,14 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             />
           </div>
 
-          <textarea 
+          <textarea
             className="ef-input"
-            placeholder="Enter Message" 
+            placeholder="Enter Message"
             rows="4"
-            style={{ 
+            maxLength={80}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            style={{
               border: '1px solid rgba(184,115,51,0.3)', 
               background: 'rgba(255,255,255,0.04)', 
               padding: '18px 24px', 
@@ -237,10 +296,24 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             </label>
           </div>
           
+          {error && (
+            <div role="alert" style={{
+              color: '#ff8a8a',
+              background: 'rgba(255,80,80,0.08)',
+              border: '1px solid rgba(255,80,80,0.3)',
+              padding: '12px 16px',
+              borderRadius: '4px',
+              fontSize: '0.85rem'
+            }}>
+              {error}
+            </div>
+          )}
+
           <div style={{ marginTop: '30px', textAlign: 'center' }}>
-            <button 
-              type="submit" 
-              style={{ 
+            <button
+              type="submit"
+              disabled={submitting}
+              style={{
                 background: '#B87333',
                 color: '#080806',
                 padding: '18px 60px',
@@ -248,13 +321,14 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
                 letterSpacing: '0.25em',
                 borderRadius: '2px',
                 border: 'none',
-                cursor: 'pointer',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                opacity: submitting ? 0.6 : 1,
                 fontWeight: 700,
                 textTransform: 'uppercase',
                 transition: '0.3s all'
               }}
             >
-              {isBrochure ? 'Submit & Download' : 'Submit Form'}
+              {submitting ? 'Submitting…' : (isBrochure ? 'Submit & Download' : 'Submit Form')}
             </button>
           </div>
         </form>
