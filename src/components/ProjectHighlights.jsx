@@ -173,7 +173,7 @@ const ProjectHighlights = () => {
           <CountUpStat value={37} prefix="G+"label="Floors Per Towers" unit="" />
           <CountUpStat value={1679} value2={3126} label="Min - Max Area" unit="SQ.FT" />
           <CountUpStat value={78} prefix="" label="Corner Flats" unit="%" />
-          <CountUpStat value={76} label="Open Space" unit="%" />
+          <CountUpStat value={72} label="Open Space" unit="%" />
           <CountUpStat value={1} prefix=""label="Clubhouse" unit="Lakh SQ.FT" />
           <CountUpStat value={1730} label="Homes" unit="Units" />
         </div>

@@ -34,7 +34,7 @@ const EXPLORER_DATA = {
   },
   Grounds: {
     title: 'The Grounds',
-    subtitle: '76% Open Space',
+    subtitle: '72% Open Space',
     description: 'The luxury is in what was left alone.',
     items: [
       { level: '01', title: 'The Pool', descriptor: 'Where the world disappears', img: '/assets/images/The-pool.webp', mobileImg: '/assets/images/The-pool-mobile.webp' },
