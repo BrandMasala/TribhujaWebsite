@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TRIBHUJA — Preloader</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; background: #000; }
+  body { overflow-x: hidden; font-family: system-ui, sans-serif; color: #fff; }
+  body.preloading { overflow: hidden; }
+
+  /* ============ PRELOADER OVERLAY ============ */
+  #preloader {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #preloader.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Expanding radial glow behind logo */
+  .glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,160,80,0.45) 0%, rgba(184,115,51,0.15) 40%, transparent 70%);
+    filter: blur(20px);
+    animation: glowExpand 2.5s ease-out forwards, glowPulse 3s ease-in-out infinite 2.5s;
+  }
+  @keyframes glowExpand {
+    0%   { width: 100px; height: 100px; opacity: 0; }
+    100% { width: 900px; height: 900px; opacity: 1; }
+  }
+  @keyframes glowPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: 0.7; transform: scale(1.08); }
+  }
+
+  /* ============ LOGO STAGE ============ */
+  .logo-stage {
+    position: relative;
+    width: min(720px, 85vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* The logo image */
+  .logo {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0;
+    transform: scale(0.6);
+    filter: blur(20px) brightness(0.5);
+    animation:
+      logoIn 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.3s,
+      logoFloat 4s ease-in-out infinite 2s;
+  }
+  @keyframes logoIn {
+    0%   { opacity: 0; transform: scale(0.6); filter: blur(20px) brightness(0.5); }
+    60%  { opacity: 1; transform: scale(1.04); filter: blur(0) brightness(1.2); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0) brightness(1); }
+  }
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-8px) scale(1.01); }
+  }
+
+  /* Gold sweep line that moves left→right across the logo */
+  .sweep-line {
+    position: absolute;
+    top: -10%;
+    bottom: -10%;
+    width: 4px;
+    background: linear-gradient(to bottom,
+      transparent,
+      #d4a050 20%,
+      #ffe5a8 50%,
+      #d4a050 80%,
+      transparent);
+    box-shadow:
+      0 0 20px #d4a050,
+      0 0 40px #b87333,
+      0 0 80px rgba(212,160,80,0.6);
+    left: -10px;
+    opacity: 0;
+    animation: sweepLine 2s cubic-bezier(0.65, 0, 0.35, 1) forwards 0.4s;
+    pointer-events: none;
+  }
+  @keyframes sweepLine {
+    0%   { left: -10px;  opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { left: 100%;   opacity: 0; }
+  }
+
+  /* Shimmer pass — runs after entrance, loops */
+  .shimmer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    background: linear-gradient(100deg,
+      transparent 0%,
+      transparent 35%,
+      rgba(255,230,180,0.4) 50%,
+      transparent 65%,
+      transparent 100%);
+    transform: skewX(-20deg);
+    left: -50%;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    animation: shimmerPass 3.5s ease-in-out infinite 2.2s;
+  }
+  @keyframes shimmerPass {
+    0%   { left: -50%; }
+    100% { left: 110%; }
+  }
+
+  /* ============ LOADING DOTS ============ */
+  .dots {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards 1.5s;
+  }
+  .dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d4a050;
+    box-shadow: 0 0 10px #b87333;
+    animation: dotBounce 1.2s ease-in-out infinite;
+  }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes dotBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.4; }
+    50%      { transform: translateY(-10px); opacity: 1; }
+  }
+
+  /* ============ PLACEHOLDER HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(ellipse at center, #1a1208 0%, #000 70%);
+  }
+  .hero h1 {
+    font-family: serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 0.15em;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: #b87333;
+    letter-spacing: 0.1em;
+    max-width: 600px;
+  }
+
+  /* ============ REDUCED MOTION ============ */
+  @media (prefers-reduced-motion: reduce) {
+    .logo { animation: none; opacity: 1; transform: none; filter: none; }
+    .glow, .sweep-line, .shimmer, .dots span { animation: none; }
+    .sweep-line, .shimmer { display: none; }
+    .glow { opacity: 1; width: 600px; height: 600px; }
+    .dots { opacity: 1; }
+  }
+</style>
+</head>
+<body class="preloading">
+
+<!-- =============== PRELOADER =============== -->
+<div id="preloader" role="status" aria-label="Loading">
+  <div class="glow"></div>
+
+  <div class="logo-stage">
+    <img
+      class="logo"
+      src="public/assets/images/logo.png"
+      alt="TRIBHUJA"
+      onerror="this.onerror=null; this.src='./public/assets/images/logo.png';"
+    />
+    <div class="sweep-line"></div>
+    <div class="shimmer"></div>
+  </div>
+
+  <div class="dots" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+</div>
+
+<!-- =============== PLACEHOLDER HERO =============== -->
+<section class="hero">
+  <h1>WELCOME TO TRIBHUJA</h1>
+  <p>Your actual site content lives here. The preloader fades away once everything is ready.</p>
+</section>
+
+<script>
+  /*
+   * Preloader controller
+   * Runs animation for a min of 3.5s, then fades out once page is loaded.
+   * Hard cap of 5.5s as a safety net.
+   */
+  (function () {
+    const preloader = document.getElementById('preloader');
+    const MIN_DISPLAY = 3500;
+    const HARD_CAP    = 5500;
+    const start = performance.now();
+    let loaded = false, hidden = false;
+
+    function hide() {
+      if (hidden) return;
+      hidden = true;
+      preloader.classList.add('hide');
+      document.body.classList.remove('preloading');
+      setTimeout(() => preloader.remove(), 900);
+    }
+    function tryHide() {
+      const elapsed = performance.now() - start;
+      if (loaded && elapsed >= MIN_DISPLAY) hide();
+      else if (loaded) setTimeout(hide, MIN_DISPLAY - elapsed);
+    }
+
+    window.addEventListener('load', () => { loaded = true; tryHide(); });
+    setTimeout(hide, HARD_CAP);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setTimeout(hide, 1200);
+    }
+  })();
+</script>
+
+</body>
+</html>
