@@ -12,33 +12,29 @@ const Hero = ({ startLoad }) => {
 
   return (
     <div id="hero">
-      <div className="hero-video-wrap">
-        {/* Poster — visible at first paint, fades out once the iframe loads */}
-        <picture className="hero-poster" aria-hidden="true" data-loaded={iframeLoaded}>
-          <source srcSet={HERO_POSTER_WEBP} type="image/webp" />
-          <img
-            src={HERO_POSTER_FALLBACK}
-            alt="Luxury 3 & 4 BHK apartments in Kollur Hyderabad by Zuari Gangothri Tribhuja"
-            decoding="async"
-            fetchpriority="high"
-          />
-        </picture>
-
+      <style dangerouslySetInnerHTML={{ __html: `
+        #hero {
+          height: auto !important;
+          min-height: auto !important;
+          position: relative !important;
+          width: 100vw !important;
+          overflow: hidden !important;
+        }
+      `}} />
+      <div style={{ padding: '56.25% 0 0 0', position: 'relative', width: '100vw' }}>
         {startLoad && (
           <iframe
-            className="hero-iframe"
-            src="https://player.vimeo.com/video/1184819034?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1&loop=1&background=1&playsinline=1&controls=0&dnt=1"
+            src="https://player.vimeo.com/video/1189990079?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;background=1"
             frameBorder="0"
             allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
             title="Tribhuja Hero"
-            loading="eager"
-            onLoad={() => setIframeLoaded(true)}
           ></iframe>
         )}
       </div>
 
-      <div className="hero-overlay" aria-hidden="false">
+      {/* <div className="hero-overlay" aria-hidden="false">
         <p style={{
           fontFamily: "'DM Sans', sans-serif",
           fontSize: '0.78rem',
@@ -62,7 +58,7 @@ const Hero = ({ startLoad }) => {
           Where all three meet.
         </p>
         <p className="hero-stamp">Kollur &middot; ORR Exit 2 &middot; Hyderabad </p>
-      </div>
+      </div> */}
 
       <div id="grain"></div>
     </div>

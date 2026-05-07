@@ -144,7 +144,7 @@ const ProjectHighlights = () => {
             viewport={{ once: true }}
             transition={{ delay: 1, duration: 0.8 }}
             className="about-overlay"
-            style={{ position: 'absolute', bottom: '60px', left: '5vw' }}
+            style={{ position: 'absolute', bottom: '20px', left: '20px', zIndex: 10 }}
           >
              <Picture
                src="/assets/images/logo-320w.png"
@@ -154,7 +154,6 @@ const ProjectHighlights = () => {
                sourceProps={{ srcSet: "/assets/images/logo-320w.webp 320w, /assets/images/logo-640w.webp 640w", sizes: "320px" }}
                style={{ height: '70px', width: 'auto', display: 'block' }}
              />
-             <div style={{ width: '40px', height: '1px', background: 'var(--accent)', marginTop: '60px' }} />
           </motion.div>
         </div>
 
