@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LEAD_API_URL = 'https://zuari.my.salesforce-sites.com/services/apexrest/WebsiteLead/';
 const PROJECT_NAME = 'Zuari Gangothri Tribhuja';
@@ -6,6 +7,7 @@ const LEAD_SOURCE = 'Website';
 
 const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
   const isBrochure = type === 'brochure';
+  const navigate = useNavigate();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -64,10 +66,10 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
         
         // After starting the download, still redirect to thank you page
         setTimeout(() => {
-          window.location.href = '/thank-you';
+          navigate('/thank-you');
         }, 500);
       } else {
-        window.location.href = '/thank-you';
+        navigate('/thank-you');
       }
       // resetForm and onClose are handled implicitly by navigation, but we keep them for cleanup
       resetForm();

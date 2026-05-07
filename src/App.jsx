@@ -31,12 +31,14 @@ const SectionFallback = () => (
 );
 
 
+import { Routes, Route, useLocation } from 'react-router-dom';
+
 function App() {
   const [loading, setLoading] = useState(true);
   const { loadedCount, total, isDone } = useHeroFrames();
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [enquiryType, setEnquiryType] = useState('general'); // 'general' | 'brochure'
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const location = useLocation();
 
   // Initialize scroll reveal animations
   useScrollReveal();
@@ -64,20 +66,15 @@ function App() {
     }
     requestAnimationFrame(raf);
 
-    // Track path changes for simple routing without react-router
-    const handleLocationChange = () => setCurrentPath(window.location.pathname);
-    window.addEventListener('popstate', handleLocationChange);
-
     return () => {
       lenis.destroy();
       delete window.lenis;
-      window.removeEventListener('popstate', handleLocationChange);
     };
   }, []);
 
   useEffect(() => {
     // Reveal first elements immediately after loading
-    if (!loading && currentPath === '/') {
+    if (!loading && location.pathname === '/') {
       setTimeout(() => {
         const firstElements = document.querySelectorAll('.reveal');
         firstElements.forEach(el => {
@@ -96,18 +93,16 @@ function App() {
 
       return () => clearTimeout(popupTimer);
     }
-  }, [loading, currentPath]);
-
-  // If the user is on the thank-you page, render ONLY that component
-  if (currentPath === '/thank-you') {
-    return (
-      <div className="app-container">
-        <ThankYou />
-      </div>
-    );
-  }
+  }, [loading, location.pathname]);
 
   return (
+    <Routes>
+      <Route path="/thank-you" element={
+        <div className="app-container">
+          <ThankYou />
+        </div>
+      } />
+      <Route path="/*" element={
     <div className="app-container">
       {loading && (
         <Loader
@@ -196,6 +191,8 @@ function App() {
         }
       `}} />
     </div>
+    } />
+    </Routes>
   );
 }
 
