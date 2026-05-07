@@ -352,13 +352,13 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           border: '1px solid rgba(184,115,51,0.2)',
           backdropFilter: 'blur(20px)'
         }}>
-          <button style={{ background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', fontSize: '0.65rem', fontWeight: 600, color: 'var(--cream)', cursor: 'pointer', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+          <a href="tel:+919000358004" style={{ background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', fontSize: '0.65rem', fontWeight: 600, color: 'var(--cream)', cursor: 'pointer', letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none' }}>
             <span style={{ opacity: 0.8 }}>📞</span> Call
-          </button>
+          </a>
           <div style={{ width: '1px', background: 'rgba(184,115,51,0.2)', margin: '10px 0' }} />
-          <button style={{ background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', fontSize: '0.65rem', fontWeight: 600, color: 'var(--cream)', cursor: 'pointer', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+          <a href="https://wa.me/919000358004" target="_blank" rel="noopener noreferrer" style={{ background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', fontSize: '0.65rem', fontWeight: 600, color: 'var(--cream)', cursor: 'pointer', letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none' }}>
             <span style={{ opacity: 0.8 }}>💬</span> WhatsApp
-          </button>
+          </a>
         </div>
       </div>
     </div>
