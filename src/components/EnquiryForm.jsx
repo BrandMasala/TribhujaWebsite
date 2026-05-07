@@ -61,9 +61,15 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        
+        // After starting the download, still redirect to thank you page
+        setTimeout(() => {
+          window.location.href = '/thank-you';
+        }, 500);
       } else {
-        alert('Thank you. A relationship manager will contact you shortly.');
+        window.location.href = '/thank-you';
       }
+      // resetForm and onClose are handled implicitly by navigation, but we keep them for cleanup
       resetForm();
       onClose();
     } catch (err) {

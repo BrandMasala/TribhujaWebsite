@@ -12,6 +12,8 @@ import { useHeroFrames } from './hooks/useHeroFrames';
 import Lenis from 'lenis';
 import { sysCredit } from './utils/credits';
 
+import ThankYou from './components/ThankYou';
+
 // Below-the-fold sections — split into their own chunks so the initial
 // JS payload is smaller. Framer Motion is heavy and both of these pull
 // it in; code-splitting saves roughly 40-60 kB off the first paint.
@@ -34,6 +36,7 @@ function App() {
   const { loadedCount, total, isDone } = useHeroFrames();
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [enquiryType, setEnquiryType] = useState('general'); // 'general' | 'brochure'
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
   // Initialize scroll reveal animations
   useScrollReveal();
@@ -61,15 +64,20 @@ function App() {
     }
     requestAnimationFrame(raf);
 
+    // Track path changes for simple routing without react-router
+    const handleLocationChange = () => setCurrentPath(window.location.pathname);
+    window.addEventListener('popstate', handleLocationChange);
+
     return () => {
       lenis.destroy();
       delete window.lenis;
+      window.removeEventListener('popstate', handleLocationChange);
     };
   }, []);
 
   useEffect(() => {
     // Reveal first elements immediately after loading
-    if (!loading) {
+    if (!loading && currentPath === '/') {
       setTimeout(() => {
         const firstElements = document.querySelectorAll('.reveal');
         firstElements.forEach(el => {
@@ -88,7 +96,16 @@ function App() {
 
       return () => clearTimeout(popupTimer);
     }
-  }, [loading]);
+  }, [loading, currentPath]);
+
+  // If the user is on the thank-you page, render ONLY that component
+  if (currentPath === '/thank-you') {
+    return (
+      <div className="app-container">
+        <ThankYou />
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">
