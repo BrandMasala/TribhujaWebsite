@@ -147,34 +147,34 @@ function App() {
       <style dangerouslySetInnerHTML={{ __html: `
         .floating-cta {
           position: fixed;
-          bottom: 40px;
-          right: 40px;
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%) rotate(180deg);
+          writing-mode: vertical-rl;
           background-color: #B87333;
           color: #080806;
           border: none;
-          padding: 16px 32px;
-          border-radius: 40px;
+          padding: 24px 14px;
+          border-radius: 0 8px 8px 0;
           font-size: 0.75rem;
           font-weight: 700;
           letter-spacing: 0.2em;
           text-transform: uppercase;
           cursor: pointer;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+          box-shadow: 5px 0 20px rgba(0,0,0,0.3);
           z-index: 9000;
           transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .floating-cta:hover {
-          transform: translateY(-5px) scale(1.05);
           background-color: #EDE6DA;
-          box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+          transform: translateY(-50%) rotate(180deg) translateX(8px);
+          box-shadow: 10px 0 25px rgba(0,0,0,0.4);
         }
         @media (max-width: 768px) {
           .floating-cta {
-            bottom: 20px;
-            right: 20px;
-            padding: 12px 24px;
+            padding: 18px 10px;
             font-size: 0.65rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border-radius: 0 6px 6px 0;
           }
         }
       `}} />
