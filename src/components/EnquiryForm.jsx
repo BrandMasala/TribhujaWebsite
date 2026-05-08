@@ -58,6 +58,23 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       }
       if (!ok) throw new Error('Submission failed. Please try again.');
 
+      // Add Meta Pixel Lead Tracking
+      if (window.fbq) {
+        window.fbq('track', 'Lead', {
+          content_name: PROJECT_NAME,
+          content_category: type === 'brochure' ? 'Brochure' : 'General Enquiry'
+        });
+      }
+
+      // Add GTM Data Layer Event
+      if (window.dataLayer) {
+        window.dataLayer.push({
+          event: 'form_submission',
+          form_type: type,
+          project: PROJECT_NAME
+        });
+      }
+
       if (type === 'brochure') {
         const link = document.createElement('a');
         link.href = '/brochure.pdf';
