@@ -21,7 +21,15 @@ const Hero = ({ startLoad }) => {
           overflow: hidden !important;
         }
       `}} />
-      <div style={{ padding: '56.25% 0 0 0', position: 'relative', width: '100vw' }}>
+      <div 
+        style={{ 
+          padding: '56.25% 0 0 0', 
+          position: 'relative', 
+          width: '100vw',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
         {startLoad && (
           <iframe
             src="https://player.vimeo.com/video/1189990079?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;muted=1&amp;loop=1&amp;background=1"

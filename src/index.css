@@ -3670,3 +3670,68 @@ nav { gap: 12px; }
   }
 }
 
+/* React Phone Input Overrides */
+.custom-phone-input {
+  width: 100% !important;
+}
+.custom-phone-input .form-control {
+  width: 100% !important;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(184,115,51,0.3) !important;
+  color: var(--cream) !important;
+  font-size: 16px !important;
+  padding: 14px 20px 14px 58px !important;
+  border-radius: 4px !important;
+  height: auto !important;
+  transition: border 0.3s !important;
+}
+.custom-phone-input .flag-dropdown {
+  background: transparent !important;
+  border: none !important;
+  border-right: 1px solid rgba(184,115,51,0.3) !important;
+  border-radius: 4px 0 0 4px !important;
+}
+.custom-phone-input .selected-flag {
+  background: transparent !important;
+  width: 45px !important;
+  padding: 0 0 0 10px !important;
+}
+.custom-phone-input .country-list {
+  background: #121212 !important;
+  color: var(--cream) !important;
+  border: 1px solid rgba(184,115,51,0.3) !important;
+  text-align: left !important;
+}
+.custom-phone-input .country-list .country:hover {
+  background-color: rgba(184, 115, 51, 0.2) !important;
+}
+.custom-phone-input .country-list .country.highlight {
+  background-color: rgba(184, 115, 51, 0.4) !important;
+}
+
+/* Navbar Logo Alignment */
+.tribhuja-logo {
+  height: clamp(42px, 4vw, 52px);
+  width: auto;
+}
+
+.zuari-logo {
+  height: clamp(14px, 1.5vw, 22px);
+  width: auto;
+  margin-left: 30px !important;
+}
+
+@media (max-width: 768px) {
+  .tribhuja-logo {
+    width: 110px !important;
+    height: auto !important;
+  }
+  .zuari-logo {
+    width: 110px !important;
+    height: auto !important;
+    margin-left: 0 !important;
+  }
+  .nav-actions {
+    display: none !important;
+  }
+}

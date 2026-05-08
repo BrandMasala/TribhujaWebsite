@@ -38,7 +38,7 @@ export const useHeroFrames = () => {
     });
 
     // 2. Main Logic Loop (50ms interval)
-    const duration = 1800; // Min cinematic time
+    const duration = 600; // Min cinematic time (reduced for faster UX)
     const startTime = Date.now();
     const safetyTimeout = 10000; // 10s safety exit
     

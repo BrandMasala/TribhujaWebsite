@@ -10,8 +10,8 @@ const Loader = ({ isDone, loadedCount, total, onComplete }) => {
     if (isDone) {
       setTimeout(() => {
         setVisible(false);
-        setTimeout(onComplete, 1300);
-      }, 600);
+        setTimeout(onComplete, 600);
+      }, 200);
     }
   }, [isDone, onComplete]);
 

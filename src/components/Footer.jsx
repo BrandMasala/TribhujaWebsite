@@ -62,40 +62,7 @@ const Footer = ({ onDownloadBrochure }) => {
           </span>
         </div>
 
-        <div style={{ textAlign: window.innerWidth < 768 ? 'center' : 'right', display: 'flex', flexDirection: 'column', gap: '14px', alignItems: window.innerWidth < 768 ? 'center' : 'flex-end' }}>
-          {/* Download Brochure CTA */}
-          <a
-            href="#brochure"
-            onClick={(e) => {
-              if (onDownloadBrochure) {
-                e.preventDefault();
-                onDownloadBrochure();
-              }
-            }}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '10px',
-              background: '#B87333',
-              color: '#080806',
-              padding: '12px 28px',
-              fontSize: '0.68rem',
-              letterSpacing: '0.2em',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              textDecoration: 'none',
-              borderRadius: '2px',
-              fontFamily: "'DM Sans', sans-serif",
-              transition: 'opacity 0.3s'
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >
-            ↓ Download Brochure
-          </a>
-
         
-        </div>
       </div>
 
       {/* Brand-triad credit — sitewide Zuari + Gangothri signal

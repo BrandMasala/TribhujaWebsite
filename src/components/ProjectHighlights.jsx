@@ -77,7 +77,7 @@ const TowerSchematic = () => (
   </svg>
 );
 
-const ProjectHighlights = () => {
+const ProjectHighlights = ({ onSiteVisit, onBrochure }) => {
   const imageRef = useRef(null);
   const isImageInView = useInView(imageRef, { once: true, margin: "-100px" });
 
@@ -180,13 +180,13 @@ const ProjectHighlights = () => {
         {/* INTRO BLOCK */}
         <div className="arrival-block" style={{ marginBottom: '80px', maxWidth: '720px' }}>
           <div className="eyebrow" style={{ marginBottom: '20px', color: '#7A3A10' }}>Infrastructure</div>
-          <h3 className="hl" style={{ fontSize: 'clamp(2.2rem, 3.5vw, 2.8rem)', marginBottom: '30px', color: '#120702', lineHeight: 1.1 }}>A building can be engineered to stand.</h3>
+          <h3 className="hl" style={{ fontSize: 'clamp(2.2rem, 3.5vw, 2.8rem)', marginBottom: '30px', color: '#120702', lineHeight: 1.1 }}>A project can be  engineered to stand.</h3>
           <p className="bd" style={{ color: '#120702', opacity: 0.8, marginBottom: '30px' }}>
-            But a building engineered to breathe,
+            But a project engineered to breathe,
             to receive light at the correct hour,
             to give every resident the dignity of
             quiet belonging — that requires a vision,
-            a plan, a method.
+            a plan, a method.<br/> Rising at Kollur, ORR Exit 2, Hyderabad.
           </p>
         </div>
 
@@ -216,8 +216,59 @@ const ProjectHighlights = () => {
               More corner homes so no side looks into another family's morning.
             </p>
           </div>
-
         </div>
+        <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '40px' }}>
+            <button 
+              onClick={onSiteVisit}
+              style={{
+                background: 'transparent',
+                border: '1px solid #7A3A10',
+                color: '#120702',
+                padding: '12px 24px',
+                fontSize: '0.8rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                transition: 'all 0.3s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#7A3A10';
+                e.currentTarget.style.color = '#fff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#120702';
+              }}
+            >
+              Book Site Visit
+            </button>
+            <button 
+              onClick={onBrochure}
+              style={{
+                background: '#7A3A10',
+                border: '1px solid #7A3A10',
+                color: '#fff',
+                padding: '12px 24px',
+                fontSize: '0.8rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.3s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#120702';
+                e.currentTarget.style.borderColor = '#120702';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#7A3A10';
+                e.currentTarget.style.borderColor = '#7A3A10';
+              }}
+            >
+              Download Brochure
+            </button>
+          </div>
+
       </div>
     </div>
     </section>

@@ -64,10 +64,10 @@ const Navbar = () => {
             alt="Tribhuja Luxury Apartments Kollur Hyderabad"
             width="320"
             height="83"
-            className="nw-logo"
+            className="nw-logo tribhuja-logo"
             loading="eager"
             decoding="async"
-            style={{ height: 'clamp(36px, 3.5vw, 52px)', width: 'auto', display: 'block' }}
+            style={{ display: 'block' }}
           />
         </picture>
 
@@ -83,10 +83,10 @@ const Navbar = () => {
             alt="Zuari Tribhuja Hyderabad"
             width="280"
             height="42"
-            className="nw-logo"
+            className="nw-logo zuari-logo"
             loading="eager"
             decoding="async"
-            style={{ height: 'clamp(14px, 1.5vw, 22px)', width: 'auto', display: 'block', marginLeft: '30px' }}
+            style={{ display: 'block' }}
           />
         </picture>
       </div>

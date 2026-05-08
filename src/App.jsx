@@ -1,7 +1,6 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import { React, useState, useEffect, Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Loader from './components/Loader';
-import Picture from './components/Picture';
 import Hero from './components/Hero';
 import ProjectHighlights from './components/ProjectHighlights';
 import Tribhuja from './components/Tribhuja';
@@ -10,7 +9,6 @@ import Footer from './components/Footer';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { useHeroFrames } from './hooks/useHeroFrames';
 import Lenis from 'lenis';
-import { sysCredit } from './utils/credits';
 
 import ThankYou from './components/ThankYou';
 
@@ -121,7 +119,10 @@ function App() {
         <Navbar />
         <>
           <Hero startLoad={!loading} />
-          <ProjectHighlights />
+          <ProjectHighlights 
+            onSiteVisit={() => { setEnquiryType('site_visit'); setIsEnquiryOpen(true); }}
+            onBrochure={() => { setEnquiryType('brochure'); setIsEnquiryOpen(true); }}
+          />
           <Tribhuja />
           <Suspense fallback={<SectionFallback />}>
             <LifestyleExplorer />
@@ -144,16 +145,18 @@ function App() {
           setIsEnquiryOpen(true);
         }} />
 
-        {/* FLOATING CTA TRIGGER */}
-        <button 
-          className="floating-cta"
-          onClick={() => {
-            setEnquiryType('general');
-            setIsEnquiryOpen(true);
-          }}
-        >
-          Enquire Now
-        </button>
+        {/* FLOATING CTA TRIGGERS */}
+        <div className="floating-cta-container">
+          <button 
+            className="floating-cta"
+            onClick={() => {
+              setEnquiryType('general');
+              setIsEnquiryOpen(true);
+            }}
+          >
+            Enquire Now
+          </button>
+        </div>
 
         {/* WHATSAPP CTA */}
         <a 
@@ -170,36 +173,42 @@ function App() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .floating-cta {
+        .floating-cta-container {
           position: fixed;
           top: 50%;
           right: 0;
-          transform: translateY(-50%) rotate(180deg);
+          transform: translateY(-50%);
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          z-index: 9000;
+        }
+        .floating-cta {
+          transform: rotate(180deg);
           writing-mode: vertical-rl;
           background-color: #B87333;
           color: #080806;
           border: none;
-          padding: 24px 14px;
+          padding: 18px 12px;
           border-radius: 0 8px 8px 0;
-          font-size: 0.75rem;
+          font-size: 0.65rem;
           font-weight: 700;
           letter-spacing: 0.2em;
           text-transform: uppercase;
           cursor: pointer;
           box-shadow: 5px 0 20px rgba(0,0,0,0.3);
-          z-index: 9000;
           transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .floating-cta:hover {
           background-color: #EDE6DA;
-          transform: translateY(-50%) rotate(180deg) translateX(8px);
+          transform: rotate(180deg) translateX(8px);
           box-shadow: 10px 0 25px rgba(0,0,0,0.4);
         }
 
         .whatsapp-btn {
           position: fixed;
-          bottom: 30px;
-          left: 30px;
+          bottom: 60px;
+          right: 30px;
           background-color: #25D366;
           color: white;
           width: 60px;
@@ -225,15 +234,15 @@ function App() {
 
         @media (max-width: 768px) {
           .floating-cta {
-            padding: 18px 10px;
-            font-size: 0.65rem;
+            padding: 14px 8px;
+            font-size: 0.55rem;
             border-radius: 0 6px 6px 0;
           }
           .whatsapp-btn {
             width: 50px;
             height: 50px;
-            bottom: 20px;
-            left: 20px;
+            bottom: 80px;
+            right: 20px;
           }
           .whatsapp-btn svg {
             width: 30px;

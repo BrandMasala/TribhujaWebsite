@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const LEAD_API_URL = 'https://zuari.my.salesforce-sites.com/services/apexrest/WebsiteLead/';
 const PROJECT_NAME = 'Zuari Gangothri Tribhuja';
@@ -31,7 +33,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       mobile: phone.trim(),
       project: PROJECT_NAME,
       source: LEAD_SOURCE,
-      subSource: isBrochure ? 'Brochure Download' : 'Enquiry Form',
+      subSource: type === 'brochure' ? 'Brochure Download' : (type === 'site_visit' ? 'Site Visit' : 'Enquiry Form'),
     };
     if (email.trim()) payload.email = email.trim();
     if (message.trim()) payload.description = message.trim().slice(0, 80);
@@ -56,7 +58,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       }
       if (!ok) throw new Error('Submission failed. Please try again.');
 
-      if (isBrochure) {
+      if (type === 'brochure') {
         const link = document.createElement('a');
         link.href = '/brochure.pdf';
         link.download = 'Tribhuja-Brochure.pdf';
@@ -163,12 +165,12 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       <div
         className="ps-inner enquiry-block enquiry-block-anim"
         style={{
-          maxWidth: '1000px',
+          maxWidth: '550px',
           width: '100%',
           margin: '0 auto',
           background: 'rgba(8, 8, 6, 0.9)',
           textAlign: 'center',
-          padding: '40px',
+          padding: '30px',
           border: '1px solid rgba(184,115,51,0.1)',
           borderRadius: '8px'
         }}
@@ -177,14 +179,14 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
         <h2
           style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-            marginBottom: '40px',
+            fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+            marginBottom: '30px',
             color: 'var(--cream)',
             fontWeight: 300,
             lineHeight: 1.2
           }}
         >
-          {isBrochure ? 'Download Brochure' : 'Send Us Your Questions'}
+          {type === 'brochure' ? 'Download Brochure' : (type === 'site_visit' ? 'Schedule a Site Visit' : 'Send Us Your Questions')}
         </h2>
 
         <form
@@ -194,12 +196,12 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             width: '100%', 
             display: 'flex',
             flexDirection: 'column',
-            gap: '24px',
+            gap: '16px',
             textAlign: 'left'
           }}
         >
           {/* ROW 1: NAME & EMAIL */}
-          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '1fr 1fr', gap: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '1fr 1fr', gap: '16px' }}>
             <input
               type="text"
               className="ef-input"
@@ -211,8 +213,8 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
               style={{
                 border: '1px solid rgba(184,115,51,0.3)', 
                 background: 'rgba(255,255,255,0.04)', 
-                padding: '18px 24px', 
-                fontSize: '0.95rem', 
+                padding: '14px 20px', 
+                fontSize: '16px', 
                 color: 'var(--cream)', 
                 outline: 'none',
                 borderRadius: '4px',
@@ -230,8 +232,8 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
               style={{
                 border: '1px solid rgba(184,115,51,0.3)', 
                 background: 'rgba(255,255,255,0.04)', 
-                padding: '18px 24px', 
-                fontSize: '0.95rem', 
+                padding: '14px 20px', 
+                fontSize: '16px', 
                 color: 'var(--cream)', 
                 outline: 'none',
                 borderRadius: '4px',
@@ -243,41 +245,32 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
 
           {/* ROW 2: PHONE - full width */}
           <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-            <span style={{ position: 'absolute', left: '22px', fontSize: '1.1rem', zIndex: 2 }}>🇮🇳</span>
-            <input
-              type="tel"
-              className="ef-input"
-              placeholder="Enter Phone Number *"
-              required
-              pattern="[0-9+\-\s]{7,20}"
+            <PhoneInput
+              country={'in'}
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              style={{
-                border: '1px solid rgba(184,115,51,0.3)', 
-                background: 'rgba(255,255,255,0.05)', 
-                padding: '20px 24px 20px 64px', 
-                fontSize: '0.95rem', 
-                color: 'var(--cream)', 
-                outline: 'none',
-                borderRadius: '4px',
-                width: '100%',
-                transition: 'border 0.3s'
-              }} 
+              onChange={phone => setPhone(phone)}
+              inputProps={{
+                required: true,
+                autoFocus: false,
+                name: 'phone'
+              }}
+              placeholder="Enter Phone Number *"
+              containerClass="custom-phone-input"
             />
           </div>
 
           <textarea
             className="ef-input"
             placeholder="Enter Message"
-            rows="4"
+            rows="3"
             maxLength={80}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             style={{
               border: '1px solid rgba(184,115,51,0.3)', 
               background: 'rgba(255,255,255,0.04)', 
-              padding: '18px 24px', 
-              fontSize: '0.95rem', 
+              padding: '14px 20px', 
+              fontSize: '16px', 
               color: 'var(--cream)', 
               outline: 'none',
               borderRadius: '4px',
@@ -317,14 +310,14 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             </div>
           )}
 
-          <div style={{ marginTop: '30px', textAlign: 'center' }}>
+          <div style={{ marginTop: '20px', textAlign: 'center' }}>
             <button
               type="submit"
               disabled={submitting}
               style={{
                 background: '#B87333',
                 color: '#080806',
-                padding: '18px 60px',
+                padding: '14px 40px',
                 fontSize: '0.8rem',
                 letterSpacing: '0.25em',
                 borderRadius: '2px',
@@ -336,7 +329,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
                 transition: '0.3s all'
               }}
             >
-              {submitting ? 'Submitting…' : (isBrochure ? 'Submit & Download' : 'Submit Form')}
+              {submitting ? 'Submitting…' : (type === 'brochure' ? 'Download Brochure' : (type === 'site_visit' ? 'Request Site Visit' : 'Submit Form'))}
             </button>
           </div>
         </form>
