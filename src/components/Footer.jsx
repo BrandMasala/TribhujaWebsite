@@ -126,7 +126,8 @@ const Footer = ({ onDownloadBrochure }) => {
         maxWidth: '1400px',
         margin: '32px auto 0',
         padding: '0 5vw 24px',
-        textAlign: 'center'
+        textAlign: 'center',
+        paddingLeft: '17vw',
       }}>
         <div className="footer-copyright" style={{
           fontSize: '0.6rem',
