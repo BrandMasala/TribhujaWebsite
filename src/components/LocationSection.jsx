@@ -50,7 +50,41 @@ const LocationSection = () => {
                 height="598"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
               />
+              
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #050505 0%, transparent 20%, transparent 80%, #050505 100%)', pointerEvents: 'none' }} />
+              {/* GET DIRECTIONS BUTTON */}
+              <a
+                href="https://maps.app.goo.gl/Qy7tNvFo9GxVnFQp6"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  position: 'absolute',
+                  bottom: '20px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  background: 'rgba(184,115,51,0.92)',
+                  color: '#fff',
+                  padding: '10px 22px',
+                  fontSize: '0.68rem',
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.15em',
+                  textDecoration: 'none',
+                  borderRadius: '2px',
+                  whiteSpace: 'nowrap',
+                  backdropFilter: 'blur(8px)',
+                  zIndex: 10
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#fff"/>
+                </svg>
+                Get Directions
+              </a>
           </div>
 
           {/* COLUMN 2: EDITORIAL LIST */}
@@ -60,6 +94,30 @@ const LocationSection = () => {
             <h2 className="hl" style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', margin: 0, color: 'var(--cream)' }}>
               The Kollur
             </h2>
+
+            <a
+              href="https://maps.app.goo.gl/Qy7tNvFo9GxVnFQp6"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: '0.7rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.25em',
+                color: '#B87333',
+                fontWeight: 600,
+                textDecoration: 'none',
+                marginTop: '-8px'
+              }}
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#B87333"/>
+              </svg>
+              Kollur, ORR Exit 2, Hyderabad &rarr;
+            </a>
 
             <p style={{ margin: 0, fontFamily: "'DM Sans', sans-serif", fontSize: '0.95rem', lineHeight: 1.6, color: 'rgba(240,226,200,0.85)', fontWeight: 300 }}>
               The neighbourhood was ready before the towers rose.

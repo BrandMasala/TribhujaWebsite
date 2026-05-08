@@ -102,7 +102,13 @@ const ProjectHighlights = ({ onSiteVisit, onBrochure }) => {
         {/* SECTION HEADER */}
         <div>
           <div className="eyebrow" style={{ color: '#7A3A10' }}>The Rise</div>
-          <h2 className="hl" style={{ fontSize: 'clamp(2.4rem, 4vw, 3.5rem)', marginBottom: '20px', color: '#120702', lineHeight: 1.1 }}>Thirty-eight floors<br />at one hundred and twenty metres.</h2>
+          <h2 className="hl" style={{ fontSize: 'clamp(2.4rem, 4vw, 3.5rem)', marginBottom: '12px', color: '#120702', lineHeight: 1.1 }}>Thirty-eight floors<br />at one hundred and twenty metres.</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="#7A3A10"/>
+            </svg>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.3em', color: '#7A3A10', fontWeight: 600 }}> Kollur, ORR Exit 2, Hyderabad</span>
+          </div>
           <div className="rule" style={{ width: '60px', backgroundColor: '#7A3A10' }}></div>
         </div>
         </div>
@@ -186,7 +192,7 @@ const ProjectHighlights = ({ onSiteVisit, onBrochure }) => {
             to receive light at the correct hour,
             to give every resident the dignity of
             quiet belonging — that requires a vision,
-            a plan, a method.<br/> Rising at Kollur, ORR Exit 2, Hyderabad.
+            a plan, a method.<br/> <b style={{ color: '#120702', fontWeight: '900' }}>Rising at Kollur, ORR Exit 2, Hyderabad.</b>
           </p>
         </div>
 

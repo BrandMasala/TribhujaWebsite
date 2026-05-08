@@ -154,7 +154,7 @@ function App() {
               setIsEnquiryOpen(true);
             }}
           >
-            Enquire Now
+            Book Site Visit
           </button>
         </div>
 
