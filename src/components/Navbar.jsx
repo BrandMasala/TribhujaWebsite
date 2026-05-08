@@ -42,31 +42,17 @@ const Navbar = () => {
         transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
-      <div className="nb nb-left">
-        {/*
-          Responsive variants so the browser never ships a 1762x265 PNG
-          when it's rendering at ~280-560px wide.
-        */}
-        <picture>
-          <source
-            type="image/webp"
-            srcSet="/assets/images/combinedcop-280w.webp 280w, /assets/images/combinedcop-560w.webp 560w"
-            sizes="(max-width: 768px) 120px, 280px"
-          />
-          <img
-            src="/assets/images/combinedcop-280w.png"
-            alt="Zuari Tribhuja Hyderabad"
-            width="280"
-            height="42"
-            className="nw-logo"
-            loading="eager"
-            decoding="async"
-            style={{ height: 'clamp(38px, 2.5vw, 84px)', width: 'auto', display: 'block' }}
-          />
-        </picture>
-      </div>
-
-       <div className="nb nb-right">
+      <div 
+        className="nb" 
+        style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'flex-start', 
+          justifyContent: 'center',
+          gap: '4px' 
+        }}
+      >
+        {/* TRIBHUJA Logo */}
         <picture>
           <source
             type="image/webp"
@@ -81,7 +67,26 @@ const Navbar = () => {
             className="nw-logo"
             loading="eager"
             decoding="async"
-            style={{ height: 'clamp(68px, 3.5vw, 144px)', width: 'auto', display: 'block' }}
+            style={{ height: 'clamp(36px, 3.5vw, 52px)', width: 'auto', display: 'block' }}
+          />
+        </picture>
+
+        {/* Zuari | Gangothri Logo */}
+        <picture>
+          <source
+            type="image/webp"
+            srcSet="/assets/images/combinedcop-280w.webp 280w, /assets/images/combinedcop-560w.webp 560w"
+            sizes="(max-width: 768px) 120px, 280px"
+          />
+          <img
+            src="/assets/images/combinedcop-280w.png"
+            alt="Zuari Tribhuja Hyderabad"
+            width="280"
+            height="42"
+            className="nw-logo"
+            loading="eager"
+            decoding="async"
+            style={{ height: 'clamp(14px, 1.5vw, 22px)', width: 'auto', display: 'block', marginLeft: '30px' }}
           />
         </picture>
       </div>
