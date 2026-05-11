@@ -301,7 +301,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           {/* CHECKBOX 1: PRIVACY CONSENT */}
           <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '2px' }}>
             <input id="consent_contact" type="checkbox" required style={{ marginTop: '3px', accentColor: '#B87333', width: '13px', height: '13px', cursor: 'pointer', flexShrink: 0 }} />
-            <label htmlFor="consent_contact" style={{ fontSize: '0.55rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.02em' }}>
+            <label htmlFor="consent_contact" style={{ fontSize: '0.5rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.01em', textTransform: 'none', opacity: 1, fontWeight: 400 }}>
               I agree to receive communications about Tribhuja and accept the terms and conditions. I understand that by submitting this form, I may be contacted via phone, SMS, email, or WhatsApp for project updates and promotional offers,and other relevant information. Your contact information will be kept confidential.            </label>
           </div>
           
@@ -309,7 +309,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           {/* CHECKBOX 2: COMMUNICATION CONSENT */}
           <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '4px' }}>
             <input id="consent_privacy" type="checkbox" required style={{ marginTop: '3px', accentColor: '#B87333', width: '13px', height: '13px', cursor: 'pointer', flexShrink: 0 }} />
-            <label htmlFor="consent_privacy" style={{ fontSize: '0.55rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.02em' }}>
+            <label htmlFor="consent_privacy" style={{ fontSize: '0.5rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.01em', textTransform: 'none', opacity: 1, fontWeight: 400 }}>
              I authorise Tribhuja Zuari Gangothri & its representatives to contact me with updates and notifications via Email/SMS/What'sApp/Call. This will override on DND/NDNC (hyperlinked to the policy/terms & condition page)            
             . I hereby give my consent to the collection and use of my personal data in accordance with the <a href="https://gangothri.com/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#B87333', fontWeight: 600, borderBottom: '1px solid rgba(184,115,51,0.3)', textDecoration: 'none' }}>Privacy Policy</a>.
             </label>
