@@ -42,14 +42,19 @@ const Navbar = () => {
         transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
-      <div 
-        className="nb" 
-        style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'flex-start', 
+      <div
+        className="nb"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
           justifyContent: 'center',
-          gap: '4px' 
+          gap: '4px',
+          cursor: 'pointer'
         }}
       >
         {/* TRIBHUJA Logo */}

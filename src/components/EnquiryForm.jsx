@@ -182,12 +182,12 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       <div
         className="ps-inner enquiry-block enquiry-block-anim"
         style={{
-          maxWidth: '550px',
+          maxWidth: '440px',
           width: '100%',
           margin: '0 auto',
           background: 'rgba(8, 8, 6, 0.9)',
           textAlign: 'center',
-          padding: '30px',
+          padding: '22px',
           border: '1px solid rgba(184,115,51,0.1)',
           borderRadius: '8px'
         }}
@@ -196,8 +196,8 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
         <h2
           style={{
             fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-            marginBottom: '30px',
+            fontSize: 'clamp(1.25rem, 3vw, 1.85rem)',
+            marginBottom: '20px',
             color: 'var(--cream)',
             fontWeight: 300,
             lineHeight: 1.2
@@ -213,12 +213,12 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             width: '100%', 
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px',
+            gap: '12px',
             textAlign: 'left'
           }}
         >
           {/* ROW 1: NAME & EMAIL */}
-          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '1fr 1fr', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth < 768 ? '1fr' : '1fr 1fr', gap: '12px' }}>
             <input
               type="text"
               className="ef-input"
@@ -228,16 +228,16 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               style={{
-                border: '1px solid rgba(184,115,51,0.3)', 
-                background: 'rgba(255,255,255,0.04)', 
-                padding: '14px 20px', 
-                fontSize: '16px', 
-                color: 'var(--cream)', 
+                border: '1px solid rgba(184,115,51,0.3)',
+                background: 'rgba(255,255,255,0.04)',
+                padding: '10px 14px',
+                fontSize: '14px',
+                color: 'var(--cream)',
                 outline: 'none',
                 borderRadius: '4px',
                 width: '100%',
                 transition: 'border 0.3s'
-              }} 
+              }}
             />
             <input
               type="email"
@@ -247,10 +247,10 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={{
-                border: '1px solid rgba(184,115,51,0.3)', 
-                background: 'rgba(255,255,255,0.04)', 
-                padding: '14px 20px', 
-                fontSize: '16px', 
+                border: '1px solid rgba(184,115,51,0.3)',
+                background: 'rgba(255,255,255,0.04)',
+                padding: '10px 14px',
+                fontSize: '14px',
                 color: 'var(--cream)', 
                 outline: 'none',
                 borderRadius: '4px',
@@ -279,36 +279,37 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           <textarea
             className="ef-input"
             placeholder="Enter Message"
-            rows="3"
+            rows="2"
             maxLength={80}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             style={{
-              border: '1px solid rgba(184,115,51,0.3)', 
-              background: 'rgba(255,255,255,0.04)', 
-              padding: '14px 20px', 
-              fontSize: '16px', 
-              color: 'var(--cream)', 
+              border: '1px solid rgba(184,115,51,0.3)',
+              background: 'rgba(255,255,255,0.04)',
+              padding: '8px 12px',
+              fontSize: '13px',
+              color: 'var(--cream)',
               outline: 'none',
               borderRadius: '4px',
               width: '100%',
               resize: 'vertical',
+              minHeight: '52px',
               transition: 'border 0.3s'
-            }} 
+            }}
           />
 
           {/* CHECKBOX 1: PRIVACY CONSENT */}
-          <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', marginTop: '5px' }}>
-            <input id="consent_contact" type="checkbox" required style={{ marginTop: '5px', accentColor: '#B87333', width: '18px', height: '18px', cursor: 'pointer' }} />
-            <label htmlFor="consent_contact" style={{ fontSize: '0.60rem', color: 'rgba(240,226,200,0.9)', lineHeight: 1.6, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.05em' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '2px' }}>
+            <input id="consent_contact" type="checkbox" required style={{ marginTop: '3px', accentColor: '#B87333', width: '13px', height: '13px', cursor: 'pointer', flexShrink: 0 }} />
+            <label htmlFor="consent_contact" style={{ fontSize: '0.55rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.02em' }}>
               I agree to receive communications about Tribhuja and accept the terms and conditions. I understand that by submitting this form, I may be contacted via phone, SMS, email, or WhatsApp for project updates and promotional offers,and other relevant information. Your contact information will be kept confidential.            </label>
           </div>
           
 
           {/* CHECKBOX 2: COMMUNICATION CONSENT */}
-          <div style={{ display: 'flex', gap: '15px', alignItems: 'flex-start', marginTop: '10px' }}>
-            <input id="consent_privacy" type="checkbox" required style={{ marginTop: '5px', accentColor: '#B87333', width: '18px', height: '18px', cursor: 'pointer' }} />
-            <label htmlFor="consent_privacy" style={{ fontSize: '0.60rem', color: 'rgba(240,226,200,0.9)', lineHeight: 1.6, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.05em' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '4px' }}>
+            <input id="consent_privacy" type="checkbox" required style={{ marginTop: '3px', accentColor: '#B87333', width: '13px', height: '13px', cursor: 'pointer', flexShrink: 0 }} />
+            <label htmlFor="consent_privacy" style={{ fontSize: '0.55rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.02em' }}>
              I authorise Tribhuja Zuari Gangothri & its representatives to contact me with updates and notifications via Email/SMS/What'sApp/Call. This will override on DND/NDNC (hyperlinked to the policy/terms & condition page)            
             . I hereby give my consent to the collection and use of my personal data in accordance with the <a href="https://gangothri.com/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#B87333', fontWeight: 600, borderBottom: '1px solid rgba(184,115,51,0.3)', textDecoration: 'none' }}>Privacy Policy</a>.
             </label>
@@ -351,25 +352,6 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           </div>
         </form>
 
-        {/* FLOATING ACTION BAR UI */}
-        <div style={{ 
-          marginTop: '40px',
-          display: 'inline-flex',
-          background: 'rgba(184,115,51,0.06)',
-          borderRadius: '4px',
-          padding: '8px',
-          gap: '4px',
-          border: '1px solid rgba(184,115,51,0.2)',
-          backdropFilter: 'blur(20px)'
-        }}>
-          <a href="tel:+919000358004" style={{ background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', fontSize: '0.65rem', fontWeight: 600, color: 'var(--cream)', cursor: 'pointer', letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none' }}>
-            <span style={{ opacity: 0.8 }}>📞</span> Call
-          </a>
-          <div style={{ width: '1px', background: 'rgba(184,115,51,0.2)', margin: '10px 0' }} />
-          <a href="https://wa.me/919000358004" target="_blank" rel="noopener noreferrer" style={{ background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 24px', fontSize: '0.65rem', fontWeight: 600, color: 'var(--cream)', cursor: 'pointer', letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none' }}>
-            <span style={{ opacity: 0.8 }}>💬</span> WhatsApp
-          </a>
-        </div>
       </div>
     </div>
   );
