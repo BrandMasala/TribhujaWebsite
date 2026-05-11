@@ -161,7 +161,7 @@ function App() {
         {/* WHATSAPP + PHONE CTA */}
         <div className="floating-contact-stack">
           <a
-            href="tel:#"
+            href="tel:+91900085769"
             className="phone-btn"
             aria-label="Call us"
           >
