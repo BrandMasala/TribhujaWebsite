@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { analytics } from '../utils/analytics';
 
 const Navbar = () => {
   const [isSolid, setIsSolid] = useState(false);
@@ -44,7 +45,10 @@ const Navbar = () => {
     >
       <div
         className="nb"
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        onClick={() => {
+          analytics.trackButtonClick('Logo Scroll To Top', 'Navbar');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}

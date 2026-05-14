@@ -1,6 +1,7 @@
 import React from 'react';
 import Picture from './Picture';
 import { sysCredit } from '../utils/credits';
+import { analytics } from '../utils/analytics';
 
 const Footer = ({ onDownloadBrochure }) => {
   return (
@@ -62,7 +63,30 @@ const Footer = ({ onDownloadBrochure }) => {
           </span>
         </div>
 
-        
+        <div style={{ textAlign: window.innerWidth < 768 ? 'center' : 'right' }}>
+          <button
+            onClick={() => {
+              analytics.trackButtonClick('Download Brochure', 'Footer');
+              onDownloadBrochure();
+            }}
+            className="footer-cta-btn"
+            style={{
+              background: 'transparent',
+              border: '1px solid #B87333',
+              color: '#B87333',
+              padding: '12px 24px',
+              fontSize: '0.7rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: '0.3s all',
+              borderRadius: '2px'
+            }}
+          >
+            Download Brochure
+          </button>
+        </div>
       </div>
 
       {/* Brand-triad credit — sitewide Zuari + Gangothri signal
@@ -112,6 +136,10 @@ const Footer = ({ onDownloadBrochure }) => {
 
       <style dangerouslySetInnerHTML={{ __html: `
         .footer-copyright-container { padding-left: 16vw; }
+        .footer-cta-btn:hover {
+          background: #B87333 !important;
+          color: #0A0A0A !important;
+        }
         @media (max-width: 768px) {
           .footer-copyright-container { padding-left: 5vw !important; }
           .footer-copyright { letter-spacing: 0.05em !important; }

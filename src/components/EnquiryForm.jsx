@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { analytics } from '../utils/analytics';
 
 const LEAD_API_URL = 'https://zuari.my.salesforce-sites.com/services/apexrest/WebsiteLead/';
 const PROJECT_NAME = 'Zuari Gangothri Tribhuja';
@@ -17,6 +18,8 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const resetForm = () => {
     setName(''); setEmail(''); setPhone(''); setMessage('');
@@ -58,22 +61,9 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       }
       if (!ok) throw new Error('Submission failed. Please try again.');
 
-      // Add Meta Pixel Lead Tracking
-      if (window.fbq) {
-        window.fbq('track', 'Lead', {
-          content_name: PROJECT_NAME,
-          content_category: type === 'brochure' ? 'Brochure' : 'General Enquiry'
-        });
-      }
-
-      // Add GTM Data Layer Event
-      if (window.dataLayer) {
-        window.dataLayer.push({
-          event: 'form_submission',
-          form_type: type,
-          project: PROJECT_NAME
-        });
-      }
+      // Universal Analytics Tracking
+      analytics.trackFormSubmit(type);
+      setIsSubmitted(true);
 
       if (type === 'brochure') {
         const link = document.createElement('a');
@@ -102,14 +92,31 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
   // Lock background scroll (Lenis + native body) while modal is open
   useEffect(() => {
     if (!isOpen) return;
+    
+    // Track Form Open
+    analytics.trackFormOpen(type);
+    setHasInteracted(false);
+    setIsSubmitted(false);
+
     if (window.lenis) window.lenis.stop();
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    
     return () => {
+      // Track Abandonment if they interacted but didn't submit
+      if (hasInteracted && !isSubmitted) {
+        let lastField = 'none';
+        if (message) lastField = 'message';
+        else if (phone) lastField = 'phone';
+        else if (email) lastField = 'email';
+        else if (name) lastField = 'name';
+        analytics.trackFormAbandon(type, lastField);
+      }
+
       if (window.lenis) window.lenis.start();
       document.body.style.overflow = prevOverflow;
     };
-  }, [isOpen]);
+  }, [isOpen, hasInteracted, isSubmitted, type]); // Added deps to capture state on cleanup
 
   if (!isOpen) return null;
 
@@ -226,7 +233,10 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
               required
               maxLength={80}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                setHasInteracted(true);
+              }}
               style={{
                 border: '1px solid rgba(184,115,51,0.3)',
                 background: 'rgba(255,255,255,0.04)',
@@ -245,7 +255,10 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
               placeholder="Enter Email *"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setHasInteracted(true);
+              }}
               style={{
                 border: '1px solid rgba(184,115,51,0.3)',
                 background: 'rgba(255,255,255,0.04)',
@@ -265,7 +278,10 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             <PhoneInput
               country={'in'}
               value={phone}
-              onChange={phone => setPhone(phone)}
+              onChange={phone => {
+                setPhone(phone);
+                setHasInteracted(true);
+              }}
               inputProps={{
                 required: true,
                 autoFocus: false,
@@ -282,7 +298,10 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             rows="2"
             maxLength={80}
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              setHasInteracted(true);
+            }}
             style={{
               border: '1px solid rgba(184,115,51,0.3)',
               background: 'rgba(255,255,255,0.04)',
