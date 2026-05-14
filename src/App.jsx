@@ -203,7 +203,7 @@ function App() {
             </svg>
           </a>
           <a
-            href="https://wa.me/919000358004"
+            href="https://wa.link/kjfrpd"
             className="whatsapp-btn"
             target="_blank"
             rel="noopener noreferrer"

@@ -155,5 +155,16 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script src="https://backend.livhousing.com/bot/create-script-tag?token=be0c146a-8be2-4a1e-9c8f-170518a242f6" type="application/javascript"></script>
+    <script>
+      // Track Live Chat Bot Clicks
+      document.addEventListener('click', function(e) {
+        // The bot usually creates a floating button or iframe
+        if (e.target.closest('#liv-bot-container') || e.target.closest('.liv-chat-launcher')) {
+          if (window.gtag) window.gtag('event', 'chat_bot_click', { 'platform': 'LivHousing' });
+          if (window.fbq) window.fbq('trackCustom', 'ChatBotClick');
+          if (window.dataLayer) window.dataLayer.push({ 'event': 'chat_bot_click' });
+        }
+      }, true);
+    </script>
   </body>
 </html>
