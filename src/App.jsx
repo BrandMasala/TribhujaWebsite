@@ -199,7 +199,7 @@ function App() {
         {/* WHATSAPP + PHONE CTA */}
         <div className="floating-contact-stack">
           <a
-            href="tel:+919100085769"
+            href="tel:+919000358004"
             className="phone-btn"
             aria-label="Call us"
             onClick={() => analytics.trackButtonClick('Phone Call', 'Floating Contact')}
