@@ -8,6 +8,15 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-M55XTQQD');</script>
     <!-- End Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-70CV5R9GR6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-70CV5R9GR6');
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -132,7 +141,7 @@
     fbq('track', 'PageView');
     </script>
     <!-- End Meta Pixel Code -->
-    <script type="module" crossorigin src="/assets/index-CmGb_NZa.js"></script>
+    <script type="module" crossorigin src="/assets/index-Cy9mOxOM.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-DgryN032.css">
   </head>
   <body>
@@ -147,5 +156,16 @@
     <!-- End Meta Pixel Code (noscript) -->
     <div id="root"></div>
     <script src="https://backend.livhousing.com/bot/create-script-tag?token=be0c146a-8be2-4a1e-9c8f-170518a242f6" type="application/javascript"></script>
+    <script>
+      // Track Live Chat Bot Clicks
+      document.addEventListener('click', function(e) {
+        // The bot usually creates a floating button or iframe
+        if (e.target.closest('#liv-bot-container') || e.target.closest('.liv-chat-launcher')) {
+          if (window.gtag) window.gtag('event', 'chat_bot_click', { 'platform': 'LivHousing' });
+          if (window.fbq) window.fbq('trackCustom', 'ChatBotClick');
+          if (window.dataLayer) window.dataLayer.push({ 'event': 'chat_bot_click' });
+        }
+      }, true);
+    </script>
   </body>
 </html>
