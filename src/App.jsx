@@ -106,15 +106,28 @@ function App() {
         });
       }, 100);
 
-      // AUTO-POPUP ENQUIRY FORM AFTER 7 SECONDS
-      const popupTimer = setTimeout(() => {
-        setEnquiryType('general');
-        setIsEnquiryOpen(true);
-      }, 7000);
+      // Check for URL parameters to auto-open specific forms
+      // Format: tribhujalife.com/?download=brochure OR ?form=site_visit
+      const params = new URLSearchParams(location.search);
+      const downloadParam = params.get('download');
+      const formParam = params.get('form');
 
-      return () => clearTimeout(popupTimer);
+      if (downloadParam === 'brochure') {
+        setEnquiryType('brochure');
+        setIsEnquiryOpen(true);
+      } else if (formParam) {
+        setEnquiryType(formParam);
+        setIsEnquiryOpen(true);
+      } else {
+        // Only trigger general auto-popup if no specific form is requested via URL
+        const popupTimer = setTimeout(() => {
+          setEnquiryType('general');
+          setIsEnquiryOpen(true);
+        }, 7000);
+        return () => clearTimeout(popupTimer);
+      }
     }
-  }, [loading, location.pathname]);
+  }, [loading, location.pathname, location.search]);
 
   return (
     <Routes>
