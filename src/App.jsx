@@ -171,10 +171,16 @@ function App() {
           />
         </>
         
-        <Footer onDownloadBrochure={() => {
-          setEnquiryType('brochure');
-          setIsEnquiryOpen(true);
-        }} />
+        <Footer 
+          onDownloadBrochure={() => {
+            setEnquiryType('brochure');
+            setIsEnquiryOpen(true);
+          }} 
+          onSiteVisit={() => {
+            setEnquiryType('site_visit');
+            setIsEnquiryOpen(true);
+          }}
+        />
 
         {/* FLOATING CTA TRIGGERS */}
         <div className="floating-cta-container">

@@ -3,7 +3,7 @@ import Picture from './Picture';
 import { sysCredit } from '../utils/credits';
 import { analytics } from '../utils/analytics';
 
-const Footer = ({ onDownloadBrochure }) => {
+const Footer = ({ onDownloadBrochure, onSiteVisit }) => {
   return (
     <footer className="site-footer" style={{ 
       position: 'relative', 
@@ -25,7 +25,6 @@ const Footer = ({ onDownloadBrochure }) => {
           pointerEvents: 'none'
         }} 
       />
-      
       <div className="site-footer-inner" style={{
         maxWidth: '1400px',
         margin: '0 auto',
@@ -63,13 +62,40 @@ const Footer = ({ onDownloadBrochure }) => {
           </span>
         </div>
 
-        <div style={{ textAlign: window.innerWidth < 768 ? 'center' : 'right' }}>
+        <div style={{ 
+          textAlign: window.innerWidth < 768 ? 'center' : 'right',
+          display: 'flex',
+          gap: '12px',
+          flexDirection: window.innerWidth < 480 ? 'column' : 'row'
+        }}>
+          <button
+            onClick={() => {
+              analytics.trackButtonClick('Book Site Visit', 'Footer');
+              onSiteVisit();
+            }}
+            className="footer-cta-btn"
+            style={{
+              background: '#B87333',
+              border: '1px solid #B87333',
+              color: '#0A0A0A',
+              padding: '12px 24px',
+              fontSize: '0.7rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: '0.3s all',
+              borderRadius: '2px'
+            }}
+          >
+            Book Site Visit
+          </button>
           <button
             onClick={() => {
               analytics.trackButtonClick('Download Brochure', 'Footer');
               onDownloadBrochure();
             }}
-            className="footer-cta-btn"
+            className="footer-cta-btn secondary"
             style={{
               background: 'transparent',
               border: '1px solid #B87333',
