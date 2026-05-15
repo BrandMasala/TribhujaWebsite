@@ -20,6 +20,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
   const [error, setError] = useState('');
   const [hasInteracted, setHasInteracted] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [downloadStarted, setDownloadStarted] = useState(false);
 
   const resetForm = () => {
     setName(''); setEmail(''); setPhone(''); setMessage('');
@@ -66,23 +67,27 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       setIsSubmitted(true);
 
       if (type === 'brochure') {
+        // Trigger download
         const link = document.createElement('a');
         link.href = '/brochure.pdf';
         link.download = 'Tribhuja-Brochure.pdf';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        setDownloadStarted(true);
         
-        // After starting the download, still redirect to thank you page
+        // Give the 32MB file more time to start before redirecting
         setTimeout(() => {
           navigate('/thank-you');
-        }, 500);
+          onClose();
+        }, 3000);
       } else {
-        navigate('/thank-you');
+        setTimeout(() => {
+          navigate('/thank-you');
+          onClose();
+        }, 1500);
       }
-      // resetForm and onClose are handled implicitly by navigation, but we keep them for cleanup
       resetForm();
-      onClose();
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
       setSubmitting(false);
@@ -200,18 +205,37 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(1.25rem, 3vw, 1.85rem)',
-            marginBottom: '20px',
-            color: 'var(--cream)',
-            fontWeight: 300,
-            lineHeight: 1.2
-          }}
-        >
-          {type === 'brochure' ? 'Download Brochure' : (type === 'site_visit' ? 'Schedule a Site Visit' : 'Send Us Your Questions')}
-        </h2>
+        {isSubmitted ? (
+          <div style={{ padding: '40px 0' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '20px' }}>✓</div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: 'var(--cream)', fontWeight: 300 }}>
+              {type === 'brochure' ? 'Brochure Download Starting...' : 'Thank You!'}
+            </h2>
+            <p style={{ color: 'rgba(237, 230, 218, 0.7)', fontSize: '0.9rem', marginTop: '10px' }}>
+              {type === 'brochure' 
+                ? 'Your download should begin automatically. If it doesn\'t, please ' 
+                : 'We have received your enquiry and will contact you shortly.'}
+              {type === 'brochure' && (
+                <a href="/brochure.pdf" download="Tribhuja-Brochure.pdf" style={{ color: '#B87333', fontWeight: 600, textDecoration: 'underline' }}>
+                  click here
+                </a>
+              )}
+            </p>
+          </div>
+        ) : (
+          <>
+            <h2
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontSize: 'clamp(1.25rem, 3vw, 1.85rem)',
+                marginBottom: '20px',
+                color: 'var(--cream)',
+                fontWeight: 300,
+                lineHeight: 1.2
+              }}
+            >
+              {type === 'brochure' ? 'Download Brochure' : (type === 'site_visit' ? 'Schedule a Site Visit' : 'Send Us Your Questions')}
+            </h2>
 
         <form
           className="form-grid"
@@ -369,29 +393,31 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             </div>
           )}
 
-          <div style={{ marginTop: '20px', textAlign: 'center' }}>
-            <button
-              type="submit"
-              disabled={submitting}
-              style={{
-                background: '#B87333',
-                color: '#080806',
-                padding: '14px 40px',
-                fontSize: '0.8rem',
-                letterSpacing: '0.25em',
-                borderRadius: '2px',
-                border: 'none',
-                cursor: submitting ? 'not-allowed' : 'pointer',
-                opacity: submitting ? 0.6 : 1,
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                transition: '0.3s all'
-              }}
-            >
-              {submitting ? 'Submitting…' : (type === 'brochure' ? 'Download Brochure' : (type === 'site_visit' ? 'Request Site Visit' : 'Submit Form'))}
-            </button>
-          </div>
-        </form>
+            <div style={{ marginTop: '20px', textAlign: 'center' }}>
+              <button
+                type="submit"
+                disabled={submitting}
+                style={{
+                  background: '#B87333',
+                  color: '#080806',
+                  padding: '14px 40px',
+                  fontSize: '0.8rem',
+                  letterSpacing: '0.25em',
+                  borderRadius: '2px',
+                  border: 'none',
+                  cursor: submitting ? 'not-allowed' : 'pointer',
+                  opacity: submitting ? 0.6 : 1,
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  transition: '0.3s all'
+                }}
+              >
+                {submitting ? 'Submitting…' : (type === 'brochure' ? 'Download Brochure' : (type === 'site_visit' ? 'Request Site Visit' : 'Submit Form'))}
+              </button>
+            </div>
+          </form>
+        </>
+      )}
 
       </div>
     </div>
