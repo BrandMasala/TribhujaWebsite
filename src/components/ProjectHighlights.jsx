@@ -77,7 +77,7 @@ const TowerSchematic = () => (
   </svg>
 );
 
-const ProjectHighlights = ({ onSiteVisit, onBrochure }) => {
+const ProjectHighlights = ({ onSiteVisit, onBrochure, onPriceSheet, onPaymentPlan }) => {
   const imageRef = useRef(null);
   const isImageInView = useInView(imageRef, { once: true, margin: "-100px" });
 
@@ -272,6 +272,54 @@ const ProjectHighlights = ({ onSiteVisit, onBrochure }) => {
               }}
             >
               Download Brochure
+            </button>
+            <button 
+              onClick={onPriceSheet}
+              style={{
+                background: 'transparent',
+                border: '1px solid #7A3A10',
+                color: '#120702',
+                padding: '12px 24px',
+                fontSize: '0.8rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                transition: 'all 0.3s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#7A3A10';
+                e.currentTarget.style.color = '#fff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#120702';
+              }}
+            >
+              Download Price Sheet
+            </button>
+            <button 
+              onClick={onPaymentPlan}
+              style={{
+                background: 'transparent',
+                border: '1px solid #7A3A10',
+                color: '#120702',
+                padding: '12px 24px',
+                fontSize: '0.8rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                transition: 'all 0.3s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#7A3A10';
+                e.currentTarget.style.color = '#fff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#120702';
+              }}
+            >
+              Download Payment Plan
             </button>
           </div>
 

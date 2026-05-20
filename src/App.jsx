@@ -115,6 +115,12 @@ function App() {
       if (downloadParam === 'brochure') {
         setEnquiryType('brochure');
         setIsEnquiryOpen(true);
+      } else if (downloadParam === 'price_sheet') {
+        setEnquiryType('price_sheet');
+        setIsEnquiryOpen(true);
+      } else if (downloadParam === 'payment_plan') {
+        setEnquiryType('payment_plan');
+        setIsEnquiryOpen(true);
       } else if (formParam) {
         setEnquiryType(formParam);
         setIsEnquiryOpen(true);
@@ -166,6 +172,16 @@ function App() {
               setEnquiryType('brochure'); 
               setIsEnquiryOpen(true); 
             }}
+            onPriceSheet={() => {
+              analytics.trackButtonClick('Download Price Sheet', 'Project Highlights');
+              setEnquiryType('price_sheet');
+              setIsEnquiryOpen(true);
+            }}
+            onPaymentPlan={() => {
+              analytics.trackButtonClick('Download Payment Plan', 'Project Highlights');
+              setEnquiryType('payment_plan');
+              setIsEnquiryOpen(true);
+            }}
           />
           <Tribhuja />
           <Suspense fallback={<SectionFallback />}>
@@ -189,6 +205,14 @@ function App() {
             setEnquiryType('brochure');
             setIsEnquiryOpen(true);
           }} 
+          onDownloadPriceSheet={() => {
+            setEnquiryType('price_sheet');
+            setIsEnquiryOpen(true);
+          }}
+          onDownloadPaymentPlan={() => {
+            setEnquiryType('payment_plan');
+            setIsEnquiryOpen(true);
+          }}
           onSiteVisit={() => {
             setEnquiryType('site_visit');
             setIsEnquiryOpen(true);

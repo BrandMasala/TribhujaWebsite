@@ -37,7 +37,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       mobile: phone.trim(),
       project: PROJECT_NAME,
       source: LEAD_SOURCE,
-      subSource: type === 'brochure' ? 'Brochure Download' : (type === 'site_visit' ? 'Site Visit' : 'Enquiry Form'),
+      subSource: type === 'brochure' ? 'Brochure Download' : (type === 'price_sheet' ? 'Price Sheet Download' : (type === 'payment_plan' ? 'Payment Plan Download' : (type === 'site_visit' ? 'Site Visit' : 'Enquiry Form'))),
     };
     if (email.trim()) payload.email = email.trim();
     if (message.trim()) payload.description = message.trim().slice(0, 80);
@@ -66,19 +66,35 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       analytics.trackFormSubmit(type);
       setIsSubmitted(true);
 
-      if (type === 'brochure') {
+      if (type === 'brochure' || type === 'price_sheet' || type === 'payment_plan') {
+        let fileUrl = '/brochure.pdf';
+        let fileName = 'Tribhuja-Brochure.pdf';
+        if (type === 'price_sheet') {
+          fileUrl = '/price-public.pdf';
+          fileName = 'Tribhuja-Price-Sheet.pdf';
+        } else if (type === 'payment_plan') {
+          fileUrl = '/price-public.pdf';
+          fileName = 'Tribhuja-Payment-Plan.pdf';
+        }
+
+        // Open in new tab (to "appear")
+        try {
+          window.open(fileUrl, '_blank');
+        } catch (e) {
+          console.error("Popup blocked:", e);
+        }
+
         // Trigger download
         const link = document.createElement('a');
-        link.href = '/brochure.pdf';
-        link.download = 'Tribhuja-Brochure.pdf';
+        link.href = fileUrl;
+        link.download = fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         setDownloadStarted(true);
         
-        // Give the 32MB file more time to start before redirecting
         setTimeout(() => {
-          navigate('/thank-you');
+          navigate('/thank-you', { state: { downloadedFile: fileUrl, downloadedName: fileName } });
           onClose();
         }, 3000);
       } else {
@@ -209,14 +225,18 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
           <div style={{ padding: '40px 0' }}>
             <div style={{ fontSize: '3rem', marginBottom: '20px' }}>✓</div>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", color: 'var(--cream)', fontWeight: 300 }}>
-              {type === 'brochure' ? 'Brochure Download Starting...' : 'Thank You!'}
+              {['brochure', 'price_sheet', 'payment_plan'].includes(type) ? 'Download Starting...' : 'Thank You!'}
             </h2>
             <p style={{ color: 'rgba(237, 230, 218, 0.7)', fontSize: '0.9rem', marginTop: '10px' }}>
-              {type === 'brochure' 
+              {['brochure', 'price_sheet', 'payment_plan'].includes(type) 
                 ? 'Your download should begin automatically. If it doesn\'t, please ' 
                 : 'We have received your enquiry and will contact you shortly.'}
-              {type === 'brochure' && (
-                <a href="/brochure.pdf" download="Tribhuja-Brochure.pdf" style={{ color: '#B87333', fontWeight: 600, textDecoration: 'underline' }}>
+              {['brochure', 'price_sheet', 'payment_plan'].includes(type) && (
+                <a 
+                  href={type === 'brochure' ? '/brochure.pdf' : '/price-public.pdf'} 
+                  download={type === 'brochure' ? 'Tribhuja-Brochure.pdf' : (type === 'price_sheet' ? 'Tribhuja-Price-Sheet.pdf' : 'Tribhuja-Payment-Plan.pdf')} 
+                  style={{ color: '#B87333', fontWeight: 600, textDecoration: 'underline' }}
+                >
                   click here
                 </a>
               )}
@@ -234,7 +254,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
                 lineHeight: 1.2
               }}
             >
-              {type === 'brochure' ? 'Download Brochure' : (type === 'site_visit' ? 'Schedule a Site Visit' : 'Send Us Your Questions')}
+              {type === 'brochure' ? 'Download Brochure' : (type === 'price_sheet' ? 'Download Price Sheet' : (type === 'payment_plan' ? 'Download Payment Plan' : (type === 'site_visit' ? 'Schedule a Site Visit' : 'Send Us Your Questions')))}
             </h2>
 
         <form
@@ -412,7 +432,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
                   transition: '0.3s all'
                 }}
               >
-                {submitting ? 'Submitting…' : (type === 'brochure' ? 'Download Brochure' : (type === 'site_visit' ? 'Request Site Visit' : 'Submit Form'))}
+                {submitting ? 'Submitting…' : (type === 'brochure' ? 'Download Brochure' : (type === 'price_sheet' ? 'Download Price Sheet' : (type === 'payment_plan' ? 'Download Payment Plan' : (type === 'site_visit' ? 'Request Site Visit' : 'Submit Form'))))}
               </button>
             </div>
           </form>

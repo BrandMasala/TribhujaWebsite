@@ -3,7 +3,7 @@ import Picture from './Picture';
 import { sysCredit } from '../utils/credits';
 import { analytics } from '../utils/analytics';
 
-const Footer = ({ onDownloadBrochure, onSiteVisit }) => {
+const Footer = ({ onDownloadBrochure, onDownloadPriceSheet, onDownloadPaymentPlan, onSiteVisit }) => {
   return (
     <footer className="site-footer" style={{ 
       position: 'relative', 
@@ -66,6 +66,8 @@ const Footer = ({ onDownloadBrochure, onSiteVisit }) => {
           textAlign: window.innerWidth < 768 ? 'center' : 'right',
           display: 'flex',
           gap: '12px',
+          flexWrap: 'wrap',
+          justifyContent: window.innerWidth < 768 ? 'center' : 'flex-end',
           flexDirection: window.innerWidth < 480 ? 'column' : 'row'
         }}>
           <button
@@ -111,6 +113,50 @@ const Footer = ({ onDownloadBrochure, onSiteVisit }) => {
             }}
           >
             Download Brochure
+          </button>
+          <button
+            onClick={() => {
+              analytics.trackButtonClick('Download Price Sheet', 'Footer');
+              onDownloadPriceSheet();
+            }}
+            className="footer-cta-btn secondary"
+            style={{
+              background: 'transparent',
+              border: '1px solid #B87333',
+              color: '#B87333',
+              padding: '12px 24px',
+              fontSize: '0.7rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: '0.3s all',
+              borderRadius: '2px'
+            }}
+          >
+            Price Sheet
+          </button>
+          <button
+            onClick={() => {
+              analytics.trackButtonClick('Download Payment Plan', 'Footer');
+              onDownloadPaymentPlan();
+            }}
+            className="footer-cta-btn secondary"
+            style={{
+              background: 'transparent',
+              border: '1px solid #B87333',
+              color: '#B87333',
+              padding: '12px 24px',
+              fontSize: '0.7rem',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: '0.3s all',
+              borderRadius: '2px'
+            }}
+          >
+            Payment Plan
           </button>
         </div>
       </div>
