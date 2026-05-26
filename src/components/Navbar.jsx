@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { analytics } from '../utils/analytics';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isSolid, setIsSolid] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = React.useRef(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogoClick = () => {
+    analytics.trackButtonClick('Logo Click', 'Navbar');
+    navigate('/');
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,13 +53,10 @@ const Navbar = () => {
     >
       <div
         className="nb"
-        onClick={() => {
-          analytics.trackButtonClick('Logo Scroll To Top', 'Navbar');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onClick={handleLogoClick}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleLogoClick(); } }}
         style={{
           display: 'flex',
           flexDirection: 'column',
