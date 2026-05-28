@@ -7,6 +7,44 @@ import { analytics } from '../utils/analytics';
 const LEAD_API_URL = 'https://zuari.my.salesforce-sites.com/services/apexrest/WebsiteLead/';
 const PROJECT_NAME = 'Zuari Gangothri Tribhuja';
 const LEAD_SOURCE = 'Website';
+const LEAD_STORAGE_KEY = 'tribhuja_lead_submitted';
+const DOWNLOAD_TYPES = ['brochure', 'price_sheet', 'payment_plan'];
+
+const getDownloadInfo = (type) => {
+  if (type === 'price_sheet') return { fileUrl: '/price-public.pdf', fileName: 'Tribhuja-Price-Sheet.pdf' };
+  if (type === 'payment_plan') return { fileUrl: '/price-public.pdf', fileName: 'Tribhuja-Payment-Plan.pdf' };
+  return { fileUrl: '/brochure.pdf', fileName: 'Tribhuja-Brochure.pdf' };
+};
+
+const triggerDownload = async (fileUrl, fileName) => {
+  let objectUrl = null;
+  try {
+    const fileRes = await fetch(fileUrl);
+    if (!fileRes.ok) throw new Error('Failed to fetch file');
+    const blob = await fileRes.blob();
+    objectUrl = URL.createObjectURL(blob);
+  } catch (e) {
+    console.error('Blob fetch failed, falling back to direct URL:', e);
+  }
+  const link = document.createElement('a');
+  link.href = objectUrl || fileUrl;
+  link.download = fileName;
+  link.rel = 'noopener';
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  if (objectUrl) setTimeout(() => URL.revokeObjectURL(objectUrl), 60000);
+};
+
+const getStoredLead = () => {
+  try {
+    const raw = localStorage.getItem(LEAD_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
 
 const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
   const isBrochure = type === 'brochure';
@@ -66,33 +104,20 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
       analytics.trackFormSubmit(type);
       setIsSubmitted(true);
 
-      if (type === 'brochure' || type === 'price_sheet' || type === 'payment_plan') {
-        let fileUrl = '/brochure.pdf';
-        let fileName = 'Tribhuja-Brochure.pdf';
-        if (type === 'price_sheet') {
-          fileUrl = '/price-public.pdf';
-          fileName = 'Tribhuja-Price-Sheet.pdf';
-        } else if (type === 'payment_plan') {
-          fileUrl = '/price-public.pdf';
-          fileName = 'Tribhuja-Payment-Plan.pdf';
-        }
+      try {
+        localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          ts: Date.now(),
+        }));
+      } catch {}
 
-        // Open in new tab (to "appear")
-        try {
-          window.open(fileUrl, '_blank');
-        } catch (e) {
-          console.error("Popup blocked:", e);
-        }
-
-        // Trigger download
-        const link = document.createElement('a');
-        link.href = fileUrl;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      if (DOWNLOAD_TYPES.includes(type)) {
+        const { fileUrl, fileName } = getDownloadInfo(type);
+        await triggerDownload(fileUrl, fileName);
         setDownloadStarted(true);
-        
+
         setTimeout(() => {
           navigate('/thank-you', { state: { downloadedFile: fileUrl, downloadedName: fileName } });
           onClose();
@@ -110,10 +135,26 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
     }
   };
 
+  // Skip the form for users who have already submitted: just download + go to thank-you.
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!DOWNLOAD_TYPES.includes(type)) return;
+    const stored = getStoredLead();
+    if (!stored) return;
+
+    const { fileUrl, fileName } = getDownloadInfo(type);
+    analytics.trackEvent('repeat_download', { form_name: type });
+    triggerDownload(fileUrl, fileName).finally(() => {
+      navigate('/thank-you', { state: { downloadedFile: fileUrl, downloadedName: fileName } });
+      onClose();
+    });
+  }, [isOpen, type, navigate, onClose]);
+
   // Lock background scroll (Lenis + native body) while modal is open
   useEffect(() => {
     if (!isOpen) return;
-    
+    if (DOWNLOAD_TYPES.includes(type) && getStoredLead()) return;
+
     // Track Form Open
     analytics.trackFormOpen(type);
     setHasInteracted(false);
@@ -140,6 +181,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
   }, [isOpen, hasInteracted, isSubmitted, type]); // Added deps to capture state on cleanup
 
   if (!isOpen) return null;
+  if (DOWNLOAD_TYPES.includes(type) && getStoredLead()) return null;
 
   return (
     <div
@@ -361,42 +403,22 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
             }}
           />
 
-          {/* CHECKBOX 1: PRIVACY CONSENT */}
+          {/* CONSENT */}
           <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '2px' }}>
-            <input 
-              id="consent_contact" 
-              type="checkbox" 
-              required 
+            <input
+              id="consent_combined"
+              type="checkbox"
+              required
               onChange={(e) => {
                 setHasInteracted(true);
                 if (e.target.checked) {
-                  analytics.trackEvent('form_checkbox_click', { checkbox_id: 'privacy_consent', form_name: type });
+                  analytics.trackEvent('form_checkbox_click', { checkbox_id: 'combined_consent', form_name: type });
                 }
               }}
-              style={{ marginTop: '3px', accentColor: '#B87333', width: '13px', height: '13px', cursor: 'pointer', flexShrink: 0 }} 
+              style={{ marginTop: '3px', accentColor: '#B87333', width: '13px', height: '13px', cursor: 'pointer', flexShrink: 0 }}
             />
-            <label htmlFor="consent_contact" style={{ fontSize: '0.5rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.01em', textTransform: 'none', opacity: 1, fontWeight: 400 }}>
-              I agree to receive communications about Tribhuja and accept the terms and conditions. I understand that by submitting this form, I may be contacted via phone, SMS, email, or WhatsApp for project updates and promotional offers,and other relevant information. Your contact information will be kept confidential.            </label>
-          </div>
-          
-
-          {/* CHECKBOX 2: COMMUNICATION CONSENT */}
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginTop: '4px' }}>
-            <input 
-              id="consent_privacy" 
-              type="checkbox" 
-              required 
-              onChange={(e) => {
-                setHasInteracted(true);
-                if (e.target.checked) {
-                  analytics.trackEvent('form_checkbox_click', { checkbox_id: 'communication_consent', form_name: type });
-                }
-              }}
-              style={{ marginTop: '3px', accentColor: '#B87333', width: '13px', height: '13px', cursor: 'pointer', flexShrink: 0 }} 
-            />
-            <label htmlFor="consent_privacy" style={{ fontSize: '0.5rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.01em', textTransform: 'none', opacity: 1, fontWeight: 400 }}>
-             I authorise Tribhuja Zuari Gangothri & its representatives to contact me with updates and notifications via Email/SMS/What'sApp/Call. This will override on DND/NDNC (hyperlinked to the policy/terms & condition page)            
-            . I hereby give my consent to the collection and use of my personal data in accordance with the <a href="https://gangothri.com/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#B87333', fontWeight: 600, borderBottom: '1px solid rgba(184,115,51,0.3)', textDecoration: 'none' }}>Privacy Policy</a>.
+            <label htmlFor="consent_combined" style={{ fontSize: '0.6rem', color: 'rgba(240,226,200,0.75)', lineHeight: 1.45, textAlign: 'left', cursor: 'pointer', letterSpacing: '0.01em', textTransform: 'none', opacity: 1, fontWeight: 400 }}>
+              I agree to receive communications about Tribhuja and accept the terms and conditions. I understand that by submitting this form, I may be contacted via phone, SMS, email, or WhatsApp for project updates and promotional offers, and other relevant information. Your contact information will be kept confidential. I authorise Tribhuja Zuari Gangothri & its representatives to contact me with updates and notifications via Email/SMS/WhatsApp/Call. This will override on DND/NDNC (hyperlinked to the policy/terms & condition page). I hereby give my consent to the collection and use of my personal data in accordance with the <a href="https://gangothri.com/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#B87333', fontWeight: 600, borderBottom: '1px solid rgba(184,115,51,0.3)', textDecoration: 'none' }}>Privacy Policy</a>.
             </label>
           </div>
           

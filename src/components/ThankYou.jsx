@@ -25,9 +25,11 @@ const ThankYou = () => {
               <p style={{ color: 'rgba(237, 230, 218, 0.7)', fontSize: '0.85rem', marginBottom: '12px', fontFamily: "'DM Sans', sans-serif" }}>
                 Your download should have started. If it didn't start automatically:
               </p>
-              <a 
-                href={downloadedFile} 
-                download={downloadedName || 'Tribhuja-Document.pdf'} 
+              <a
+                href={downloadedFile}
+                download={downloadedName || 'Tribhuja-Document.pdf'}
+                target="_blank"
+                rel="noopener"
                 style={{ 
                   display: 'inline-block', 
                   background: '#B87333', 
