@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { analytics } from '../utils/analytics';
+import { analytics, trackEvent } from '../utils/analytics';
 
 const LEAD_API_URL = 'https://zuari.my.salesforce-sites.com/services/apexrest/WebsiteLead/';
 const PROJECT_NAME = 'Zuari Gangothri Tribhuja';
@@ -143,7 +143,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
     if (!stored) return;
 
     const { fileUrl, fileName } = getDownloadInfo(type);
-    analytics.trackEvent('repeat_download', { form_name: type });
+    trackEvent('repeat_download', { form_name: type });
     triggerDownload(fileUrl, fileName).finally(() => {
       navigate('/thank-you', { state: { downloadedFile: fileUrl, downloadedName: fileName } });
       onClose();
@@ -412,7 +412,7 @@ const EnquiryForm = ({ isOpen, onClose, type = 'general' }) => {
               onChange={(e) => {
                 setHasInteracted(true);
                 if (e.target.checked) {
-                  analytics.trackEvent('form_checkbox_click', { checkbox_id: 'combined_consent', form_name: type });
+                  trackEvent('form_checkbox_click', { checkbox_id: 'combined_consent', form_name: type });
                 }
               }}
               style={{ marginTop: '3px', accentColor: '#B87333', width: '13px', height: '13px', cursor: 'pointer', flexShrink: 0 }}
