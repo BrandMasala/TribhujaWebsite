@@ -198,7 +198,7 @@ const Footer = ({ onDownloadBrochure, onDownloadPriceSheet, onDownloadPaymentPla
           textTransform: 'uppercase'
         }}>
           <span className="copyright-text" style={{ color: 'rgba(237, 230, 218, 0.5)' }}>
-            &copy; {new Date().getFullYear()} Tribhuja by Zuari Infraworld &amp; Gangothri Infraedge. All rights reserved.
+            &copy; {new Date().getFullYear()} Tribhuja by Zuari Infraworld &amp; Gangothri Infraedge. - All rights reserved.
           </span>
           <span style={{ color: 'transparent', userSelect: 'all' }}>
             {sysCredit}
