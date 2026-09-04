@@ -165,6 +165,15 @@ const ProjectHighlights = ({ onSiteVisit, onBrochure, onPriceSheet, onPaymentPla
 
         <div className="ps-inner" style={{ paddingBottom: '60px' }}>
 
+          <h1 style={{
+          fontSize: 'clamp(1.8rem, 3vw, 2.4rem)',
+          fontWeight: 300,
+          color: '#120702',
+          fontFamily: "'Cormorant Garamond', serif",
+          lineHeight: 1.2,
+          marginBottom: '40px'
+        }}>Luxury 3 & 4 BHK Flats in Kollur</h1>
+
         {/* HUD STATS GRID */}
         <div className="ph-stats-grid" style={{
           display: 'grid',
